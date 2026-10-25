@@ -14,13 +14,16 @@ namespace store::i18n
 {
 namespace
 {
-constexpr const char *kCodes[kLanguageCount] = {"en", "es", "fr", "pt", "ja", "de", "nl", "tr"};
-constexpr const char *kNames[kLanguageCount] = {"English", "Español", "Français",   "Português",
-                                                "日本語",  "Deutsch", "Nederlands", "Türkçe"};
+constexpr const char *kCodes[kLanguageCount] = {"en", "es", "fr", "pt", "ja",
+                                                "de", "nl", "tr", "zh"};
+constexpr const char *kNames[kLanguageCount] = {"English",    "Español", "Français",
+                                                "Português",  "日本語",  "Deutsch",
+                                                "Nederlands", "Türkçe",  "简体中文"};
 
 // Read by the installer's thread as well as the screen's.
 std::atomic<Language> current{Language::english};
 std::atomic<bool> japanese_font{false};
+std::atomic<bool> chinese_font{false};
 
 // The rows by their English, for a binary search; made on first use.
 const std::vector<const Row *> &index()
@@ -51,8 +54,9 @@ const Row *find(std::string_view english)
 Language from_console(int console_language)
 {
     // The console's numbers: 0 Japanese, 1 American English, 2 French, 3 Spanish, 4 German,
-    // 6 Dutch, 7 Portuguese, 17 Brazilian Portuguese, 18 British English, 19 Turkish, 20 Latin
-    // American Spanish, 22 Canadian French. Anything else has no translation here: English.
+    // 6 Dutch, 7 Portuguese, 11 Simplified Chinese, 17 Brazilian Portuguese, 18 British English,
+    // 19 Turkish, 20 Latin American Spanish, 22 Canadian French. Anything else has no translation
+    // here: English, Traditional Chinese (10) among them.
     Language language = Language::english;
     switch (console_language)
     {
@@ -76,6 +80,9 @@ Language from_console(int console_language)
     case 7:
     case 17:
         language = Language::portuguese;
+        break;
+    case 11:
+        language = Language::chinese;
         break;
     case 19:
         language = Language::turkish;
@@ -109,12 +116,18 @@ bool parse_code(std::string_view text, Language *language)
 
 bool available(Language language)
 {
-    return language != Language::japanese || japanese_font.load();
+    return (language != Language::japanese || japanese_font.load()) &&
+           (language != Language::chinese || chinese_font.load());
 }
 
 void set_japanese_available(bool is_available)
 {
     japanese_font.store(is_available);
+}
+
+void set_chinese_available(bool is_available)
+{
+    chinese_font.store(is_available);
 }
 
 void set_language(Language language)

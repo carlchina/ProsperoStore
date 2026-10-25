@@ -292,6 +292,13 @@ int main()
         store::i18n::set_japanese_available(
             ::stat((app_root + "/assets/fonts/noto-sans-jp-regular.huifont").c_str(),
                    &japanese_font) == 0);
+        // Simplified Chinese is offered when its font files are with the app.
+        struct stat chinese_font
+        {
+        };
+        store::i18n::set_chinese_available(
+            ::stat((app_root + "/assets/fonts/noto-sans-sc-regular.huifont").c_str(),
+                   &chinese_font) == 0);
         screen.set_console_language(sys::language_id());
         screen.set_settings(store::parse_settings(saved));
         service.check_updates = screen.settings().check_updates;
@@ -1042,6 +1049,14 @@ int main()
             !fonts.load_japanese(renderer, app_root + "/assets"))
         {
             store::i18n::set_japanese_available(false);
+            store::i18n::set_language(store::i18n::Language::english);
+        }
+        // The Chinese faces are loaded the first time the store speaks Simplified Chinese; if
+        // they cannot be, it goes back to English too.
+        if (store::i18n::language() == store::i18n::Language::chinese && !fonts.has_chinese() &&
+            !fonts.load_chinese(renderer, app_root + "/assets"))
+        {
+            store::i18n::set_chinese_available(false);
             store::i18n::set_language(store::i18n::Language::english);
         }
         screen.draw(renderer, fonts.active());

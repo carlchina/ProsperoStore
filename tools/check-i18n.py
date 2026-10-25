@@ -3,7 +3,7 @@
 # Copyright (C) 2026 BlackBearReloaded
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Every sentence the code passes to tr(), trs(), trc(), trf() or trn() must have a row in
-src/core/i18n_strings.cpp, and every row must have its sentence in all eight languages with the
+src/core/i18n_strings.cpp, and every row must have its sentence in all nine languages with the
 same {0}, {1}... in each. Run it with no arguments; it exits 1 and says what is wrong."""
 
 import re
@@ -12,7 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TABLE = ROOT / "src" / "core" / "i18n_strings.cpp"
-LANGUAGES = ["en", "es", "fr", "pt", "ja", "de", "nl", "tr"]
+LANGUAGES = ["en", "es", "fr", "pt", "ja", "de", "nl", "tr", "zh"]
 CALLS = {"tr", "trs", "trc", "trf", "trn"}
 
 

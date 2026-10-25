@@ -588,18 +588,32 @@ class Fonts
     {
         return japanese_loaded_;
     }
-    // What the screen is drawn with: the Japanese faces while the store speaks Japanese.
+    // The faces for Simplified Chinese (Noto Sans CJK SC, the same three faces), likewise.
+    bool load_chinese(hui::gfx::Renderer &renderer, const std::string &assets);
+    bool has_chinese() const
+    {
+        return chinese_loaded_;
+    }
+    // What the screen is drawn with: the Japanese or Chinese faces while the store speaks one of
+    // them.
     const hui::ui::Fonts &active() const
     {
-        return japanese_loaded_ && i18n::language() == i18n::Language::japanese ? japanese : refs;
+        if (japanese_loaded_ && i18n::language() == i18n::Language::japanese)
+            return japanese;
+        if (chinese_loaded_ && i18n::language() == i18n::Language::chinese)
+            return chinese;
+        return refs;
     }
     hui::ui::Fonts refs;
     hui::ui::Fonts japanese;
+    hui::ui::Fonts chinese;
 
   private:
     hui::gfx::Font faces_[6];
     hui::gfx::Font japanese_faces_[3];
+    hui::gfx::Font chinese_faces_[3];
     bool japanese_loaded_ = false;
+    bool chinese_loaded_ = false;
 };
 
 } // namespace store

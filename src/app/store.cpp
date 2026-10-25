@@ -4850,6 +4850,25 @@ bool Fonts::load_japanese(gfx::Renderer &renderer, const std::string &assets)
     return true;
 }
 
+bool Fonts::load_chinese(gfx::Renderer &renderer, const std::string &assets)
+{
+    constexpr const char *names[] = {"noto-sans-sc-regular", "noto-sans-sc-semibold",
+                                     "noto-sans-sc-medium"};
+    chinese = refs;
+    ui::FontRef *replaced[] = {&chinese.regular, &chinese.semibold, &chinese.display};
+    for (std::size_t i = 0; i < 3; ++i)
+    {
+        std::string data;
+        if (!save::read_file(assets + "/fonts/" + names[i] + ".huifont", &data) ||
+            !chinese_faces_[i].load(data))
+            return false;
+        *replaced[i] = {&chinese_faces_[i],
+                        renderer.batch().create_font_texture(chinese_faces_[i])};
+    }
+    chinese_loaded_ = true;
+    return true;
+}
+
 bool Fonts::load(gfx::Renderer &renderer, const std::string &assets)
 {
     constexpr const char *names[] = {"inter-regular",    "inter-semibold", "montserrat-medium",

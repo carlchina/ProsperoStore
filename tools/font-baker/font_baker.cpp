@@ -22,6 +22,15 @@
 //
 // (Bold for the semibold face, keeping inter-semibold; Medium for the title face, keeping
 // montserrat-medium.) Bake them again when a Japanese sentence uses a character they lack.
+//
+// The Simplified Chinese faces (assets/fonts/noto-sans-sc-*.huifont) are Noto Sans CJK SC, from
+// the same repository (Sans/OTF/SimplifiedChinese), baked from the characters of the Simplified
+// Chinese column of src/core/i18n_strings.cpp with the same --keep faces:
+//
+//   font-baker NotoSansCJKsc-Regular.otf assets/fonts/noto-sans-sc-regular.huifont --size 56 \
+//       --range 8 --chars chinese.txt --keep assets/fonts/inter-regular.huifont
+//
+// Bake them again when a Chinese sentence uses a character they lack.
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "../../third_party/stb/stb_truetype.h"

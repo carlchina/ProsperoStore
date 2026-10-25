@@ -70,9 +70,9 @@ It is an alpha; the current version is the newest one on the
   drive or a USB drive, chosen in **Settings**.
 - **It updates itself** - when a newer ProsperoStore is listed, its own page offers it; see
   [Updating ProsperoStore](#updating-prosperostore).
-- **Your language** - English, Spanish, French, Portuguese, Japanese, German, Dutch and Turkish.
-  The store starts in the PS5's own language (Spanish for Spain and Latin America alike) and falls
-  back to English for any other; **Settings > Language** picks one. Only the store's own words change: an
+- **Your language** - English, Spanish, French, Portuguese, Japanese, German, Dutch, Turkish and
+  Simplified Chinese. The store starts in the PS5's own language (Spanish for Spain and Latin America
+  alike) and falls back to English for any other; **Settings > Language** picks one. Only the store's own words change: an
   app's name, description and release notes stay as its developer wrote them.
 - **Looks and feel** - each app's picture is made from its own icon's colours, with a soft
   opening animation, background music, interface sounds and springy motion. **Reduce motion** is

@@ -28,20 +28,23 @@ enum class Language : std::uint8_t
     german,
     dutch,
     turkish,
+    chinese,
 };
-constexpr int kLanguageCount = 8;
+constexpr int kLanguageCount = 9;
 
 // What the console is set to (SCE_SYSTEM_SERVICE_PARAM_ID_LANG) as one of ours. Both Spains, both
 // Portugals and both Frances are one language here; a language the store lacks is English.
 Language from_console(int console_language);
 
-const char *code(Language language);        // "en", "es", "fr", "pt", "ja", "de", "nl", "tr"
+const char *code(Language language);        // "en", "es", "fr", "pt", "ja", "de", "nl", "tr", "zh"
 const char *native_name(Language language); // as its speakers write it: "Español"
 bool parse_code(std::string_view text, Language *language);
-// Whether the store can show it now. Japanese needs its font (assets/fonts/noto-sans-jp-*.huifont):
-// the program that starts the store says whether the files are there.
+// Whether the store can show it now. Japanese and Chinese each need their font
+// (assets/fonts/noto-sans-jp-*.huifont, assets/fonts/noto-sans-sc-*.huifont): the program that
+// starts the store says whether the files are there.
 bool available(Language language);
 void set_japanese_available(bool available);
+void set_chinese_available(bool available);
 
 void set_language(Language language);
 Language language();

@@ -25,6 +25,7 @@ int main()
 {
     using namespace store::i18n;
     set_japanese_available(true);
+    set_chinese_available(true);
 
     // The console's languages: both Spains, both Portugals and both Frances are one each.
     assert(from_console(1) == Language::english && from_console(18) == Language::english);
@@ -33,8 +34,10 @@ int main()
     assert(from_console(7) == Language::portuguese && from_console(17) == Language::portuguese);
     assert(from_console(4) == Language::german && from_console(6) == Language::dutch);
     assert(from_console(0) == Language::japanese && from_console(19) == Language::turkish);
+    assert(from_console(11) == Language::chinese);
     assert(from_console(5) == Language::english &&
-           from_console(9) == Language::english); // none of ours
+           from_console(9) == Language::english);  // none of ours
+    assert(from_console(10) == Language::english); // Traditional Chinese is not one of ours
     assert(from_console(-1) == Language::english);
     // Without the Japanese font the console's Japanese is English, and so is choosing it.
     set_japanese_available(false);
@@ -42,14 +45,23 @@ int main()
     set_language(Language::japanese);
     assert(language() == Language::english);
     set_japanese_available(true);
+    // Without the Chinese font the console's Simplified Chinese is English, likewise.
+    set_chinese_available(false);
+    assert(from_console(11) == Language::english && !available(Language::chinese));
+    set_language(Language::chinese);
+    assert(language() == Language::english);
+    set_chinese_available(true);
 
     Language parsed{};
     assert(parse_code("es", &parsed) && parsed == Language::spanish);
     assert(parse_code("ja", &parsed) && parsed == Language::japanese);
+    assert(parse_code("zh", &parsed) && parsed == Language::chinese);
     assert(!parse_code("xx", &parsed) && !parse_code("", &parsed));
     assert(std::string(code(Language::dutch)) == "nl");
+    assert(std::string(code(Language::chinese)) == "zh");
     assert(parse_code("tr", &parsed) && parsed == Language::turkish);
     assert(std::string(native_name(Language::turkish)) == "Türkçe");
+    assert(std::string(native_name(Language::chinese)) == "简体中文");
 
     // The same sentence, in each language; a sentence that is not in the table stays as it is.
     set_language(Language::english);
@@ -64,6 +76,9 @@ int main()
     set_language(Language::turkish);
     assert(tr("Settings") == "Ayarlar");
     assert(trn(2, "{0} comment", "{0} comments") == "2 yorum");
+    set_language(Language::chinese);
+    assert(tr("Settings") == "设置");
+    assert(trn(2, "{0} comment", "{0} comments") == "2 条评论");
 
     // {0} and the counts.
     set_language(Language::english);
